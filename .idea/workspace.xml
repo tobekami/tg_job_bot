@@ -5,14 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3b55ff9-80de-4501-a634-ec8c23d110a9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/telegramAutomation.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main_original.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classifier/llm_classifier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/keywords.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants/keywords.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/contacts.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/contacts.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/groups.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/groups.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/last_read.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/last_read.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/messaged_users.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/messaged_users.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/pitches.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/pitches.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/private_pitches.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/private_pitches.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/managers/contact_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/managers/contact_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/on_start/get_last_messages.py" beforeDir="false" afterPath="$PROJECT_DIR$/on_start/get_last_messages.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,12 +45,20 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Python.get_last_messages.executor": "Run",
+    "Python.getgroups.executor": "Run",
+    "Python.keywords.executor": "Run",
+    "Python.llm_classifier.executor": "Run",
     "Python.main.executor": "Run",
+    "Python.main_original.executor": "Run",
+    "Python.test.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.codeium.enabled": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Admin/PycharmProjects/telegramAutomation",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/Admin/PycharmProjects/multi_spoof",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
@@ -54,36 +67,12 @@
       <recent name="C:\Users\Admin\PycharmProjects\telegramAutomation" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Admin\PycharmProjects\telegramAutomation\data" />
       <recent name="C:\Users\Admin\PycharmProjects\telegramAutomation\managers" />
       <recent name="C:\Users\Admin\PycharmProjects\telegramAutomation\contacts" />
       <recent name="C:\Users\Admin\PycharmProjects\telegramAutomation\models" />
       <recent name="C:\Users\Admin\PycharmProjects\telegramAutomation" />
-      <recent name="C:\Users\Admin\PycharmProjects\telegramAutomation\data" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration name="main_original" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="telegramAutomation" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\Admin\PycharmProjects\telegramAutomation\main_original.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

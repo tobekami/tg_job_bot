@@ -4,10 +4,11 @@ import datetime
 import random
 
 from telethon.tl.types import PeerChat
-
+from pathlib import Path
 from classifier.keyword_classifier import label_message_keywords
+from classifier.llm_classifier import classify_message_llm
 from classifier.model_classifier import classify_message_model
-from constants.keywords import GROUPS
+from constants.keywords import GROUPS, PRIVATE_GROUP_ID
 from managers.contact_manager import ContactManager
 from managers.pitch_manager import PitchManager
 
@@ -15,7 +16,8 @@ from managers.pitch_manager import PitchManager
 contact_manager = ContactManager()
 pitch_manager = PitchManager()
 
-LAST_READ_FILE = 'last_read.json'
+DATA_DIR = Path('data')
+LAST_READ_FILE = DATA_DIR / 'last_read.json'
 
 
 def load_last_read():
@@ -76,7 +78,8 @@ async def process_missed_messages(client, last_read):
                 if msg_time.tzinfo is None:
                     msg_time = msg_time.replace(tzinfo=datetime.timezone.utc)
 
-                text = (message.message or "").replace('\n', ' ')[:80]  # Preview
+                text = message.message or ""  # Preview
+                safe_text = text.replace('\n', ' ')[:60]
 
                 sender = await message.get_sender()
                 sender_id = sender.id
@@ -86,7 +89,7 @@ async def process_missed_messages(client, last_read):
                     print(f"🙅 Skipping own message {message.id}")
                     continue
 
-                print(f"📨 Message ID {message.id} | From: {sender_id} | Date: {msg_time.isoformat()} | Text: {text.replace('\n', ' ')[:60]}")
+                print(f"📨 Message ID {message.id} | From: {sender_id} | Date: {msg_time.isoformat()} | Text: {safe_text}")
 
                 if msg_time <= last_time:
                     print(
@@ -94,28 +97,71 @@ async def process_missed_messages(client, last_read):
                     continue
 
                 found = True
+                # ✅ Skip classification if we've already messaged this user
+                if sender_id in contact_manager.messaged_users or sender_id in contact_manager.processing_users:
+                    print(f"⏩ Already messaged or processing {sender_id}, skipping...")
+                    return
+
+
+                # Step 1: Keyword classification
                 label = label_message_keywords(text)
                 print(f"🔍 Keyword-based label: {label}")
 
+                # Step 2: Model fallback if unsure
                 if label == 'unsure':
                     label = classify_message_model(text)
                     print(f"🤖 Model-based label: {label}")
 
+                # Step 3: Use LLM only for employer messages
                 if label == 'employer':
-                    print(f"💼 [Replay] Employer message from {sender_id}: {text.replace('\n', ' ')[:60]}")
+                    llm_result = await classify_message_llm(text)
+                    confirmed_label = llm_result.get("label")
+                    reason = llm_result.get("reason", "No reason provided")
+                    response = llm_result.get("response", "No response provided")
 
-                    user_info = await contact_manager.get_or_cache_user(client, sender_id)
-                    if not user_info:
-                        print(f"⚠️ Skipping {sender_id} - no contact info")
-                        continue
+                    if confirmed_label != 'employer':
+                        print(
+                            f"❌ LLM disagreed. Ignoring message. LLM said: {confirmed_label} | Reason: {reason}"
+                        )
+                        return
 
-                    await asyncio.sleep(random.randint(3, 8))  # Human-like delay
+                    print(f"✅ LLM confirmed employer message: {reason}")
+                    print(f"💼 Detected employer message from {sender_id}: {text[:60]}...")
 
-                    await client.send_message(
-                        sender_id,
-                        pitch_manager.get_random_private_pitch(),
-                        reply_to=message.id
-                    )
+                    try:
+                        user_info = await contact_manager.get_or_cache_user(client, sender_id, sender)
+                        if not user_info:
+                            print(f"⚠️ Could not get contact info for {sender_id} — will try to send message anyway.")
+                        else:
+                            print(f"✅ Got user info for {sender_id}: {user_info}")
+
+                        await asyncio.sleep(random.randint(5, 15))  # Human-like delay
+
+                        await client.send_message(
+                            sender_id,
+                            response,
+                            reply_to=message.id
+                        )
+
+                        await asyncio.sleep(random.randint(2, 3))  # Human-like delay
+
+                        await client.send_message(
+                            PRIVATE_GROUP_ID,
+                            f'📢 You just texted [this employer](tg://user?id={sender_id}) regarding a job.\n\nMessage: "{text[:100]}..."',
+                            parse_mode='markdown'
+                        )
+
+                        contact_manager.add_messaged_user(sender_id)
+                        name = user_info['username'] or user_info['full_name']
+                        print(f"💬 Messaged: {name} (ID: {sender_id})")
+
+                        group_id = str(group)
+                        last_read[group_id] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+                        save_last_read(last_read)
+                        contact_manager.save_to_disk()
+
+                    except Exception as e:
+                        print(f"⚠️ Failed to message {sender_id}: {e}")
 
                     contact_manager.add_messaged_user(sender_id)
 

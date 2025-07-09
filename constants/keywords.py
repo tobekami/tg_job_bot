@@ -2,10 +2,12 @@ from telethon.tl.types import PeerChat
 
 # Group IDs to monitor
 PRIVATE_GROUP_ID = PeerChat(4760383950)
+PUBLIC_GROUP_ID = -1002579059359
 GROUPS = [
     PRIVATE_GROUP_ID,   # Private group
-    # -1002579059359 #-1001854701169, -1001891392293, -1001952636329, -1001952636329, -1001971671774  Example public group (replace with real ID or username)
+    -1002011497032, -1001987285014, -1001854701169, -1001891392293, -1001952636329, -1001971671774  #Example public group (replace with real ID or username)
 ]
+
 employer_keywords = [
     "we are", "we're hiring", "we are looking for", "need a", "job opening",
     "join our team", "now hiring", "open position", "apply now", "work with us",
@@ -30,8 +32,10 @@ freelancer_keywords = [
 barred_keywords = [
     "sent a dm", "hack", "unban", "unbans", "can't send message", "can't dm", "automates", "automate", "buying",
     "hackers", "limited spot", "limited spots", "needs traffic", "banned", "removal", "limited space", "spanish",
-    "french", "danish", "swap", "recovery"
+    "french", "danish", "swap", "recovery", "chatter", "welcome", "do not", "don't", "lead", "filipino", "iphone",
+    "IOS", "jailbroken", "jail", "broken", "jb", "threads", "instagram", "chatters", "philippines", "PH", "thread",
+    "dating", "tinder", "grindr", "bumble", "DA", "IG"
 ]
 
-GROUP_MESSAGE_INTERVAL = 60  # Time between full rounds (e.g., 1 hour)
+GROUP_MESSAGE_INTERVAL = 3600  # Time between full rounds (e.g., 1 hour)
 PER_GROUP_DELAY = 10

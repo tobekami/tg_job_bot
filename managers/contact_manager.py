@@ -10,6 +10,7 @@ class ContactManager:
     def __init__(self):
         self.contact_cache = {}
         self.messaged_users = set()
+        self.processing_users = set()
         DATA_DIR.mkdir(exist_ok=True)
         self.load_from_disk()
 
@@ -48,18 +49,25 @@ class ContactManager:
         except Exception as e:
             print(f"⚠️ Error saving contact data: {e}")
 
-    async def get_or_cache_user(self, client, user_id):
+    async def get_or_cache_user(self, client, user_id, sender=None):
         if user_id in self.contact_cache and time.time() - self.contact_cache[user_id]["timestamp"] < 3600:
             return self.contact_cache[user_id]
+
         try:
-            user = await client.get_entity(user_id)
+            if sender:  # Safer: use event.sender if available
+                user = sender
+            else:
+                # Optional: skip or log if no sender
+                return None
+
             self.contact_cache[user_id] = {
-                'username': user.username,
-                'full_name': f"{user.first_name or ''} {user.last_name or ''}".strip(),
+                'username': getattr(user, 'username', None),
+                'full_name': f"{getattr(user, 'first_name', '')} {getattr(user, 'last_name', '')}".strip(),
                 'timestamp': time.time()
             }
             self.save_to_disk()
             return self.contact_cache[user_id]
+
         except Exception as e:
             print(f"⚠️ Could not fetch user {user_id}: {e}")
             return None

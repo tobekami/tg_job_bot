@@ -1,3 +1,10 @@
-api_id = 28050501
-api_hash = '006f0985fdf2cd5e810a5373254244ff'
-session_name = 'group_fetcher'
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+api_id = int(os.getenv("API_ID"))
+api_hash = os.getenv("API_HASH")
+session_name = os.getenv("SESSION_NAME", "anon")  # Default to "anon" if not set
+open_router_api_key = os.getenv("OPENROUTER_API_KEY")
+gemini_api_key = os.getenv("GEMINI_API_KEY")
